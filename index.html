@@ -1,0 +1,17 @@
+<!-- Load Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://aceupggdpvivmtfduleu.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_OIgpPFnb9d_7gwTZpKdOPQ_NCqSdWTE";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Listener Realtime Pesan Baru
+  supabase
+    .channel('public:messages')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+      // Panggil fungsi render pesan jika receiver_id atau sender_id cocok
+      console.log('Pesan baru masuk:', payload.new);
+    })
+    .subscribe();
+</script>
